@@ -87,6 +87,48 @@ int main()
 void moveOddItemsToBack(LinkedList *ll)
 {
 	/* add your code here */
+	//ListNode *oddP = ll->head;
+	ListNode *start = ll->head;
+	ListNode *oddHead = NULL;
+	ListNode *oddTail = NULL;
+	ListNode *evenHead = NULL;
+	ListNode *evenTail = NULL;
+
+	while(start != NULL) {
+		if (start->item % 2 == 0) {
+			if (evenHead == NULL) {
+				evenHead = start;
+				evenTail = start;
+			} else {
+				evenTail->next = start;
+				evenTail = start;
+			}
+		}
+		else {
+			if (oddHead == NULL) {
+				oddHead = start;
+				oddTail = start;
+			} else {
+				oddTail->next = start;
+				oddTail = start;
+			}
+		}
+
+		start = start->next;
+	}
+
+	if (oddTail != NULL) {
+		oddTail->next = NULL;
+	}
+
+	// 짝수존재 + 홀수존재
+	if (evenHead != NULL) {
+		evenTail->next = oddHead; //짝수만 있는 경우 포함
+		ll->head = evenHead;
+	} else {
+		ll->head = oddHead; //홀수만 있는 경우
+	}
+	
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
