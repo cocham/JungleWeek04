@@ -103,6 +103,59 @@ int main()
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
 {
 	/* add your code here */
+	ListNode *frontP = resultFrontList->head;
+	ListNode *frontTailP = resultFrontList->head;
+
+	ListNode *backP = resultBackList->head;
+	ListNode *backTail = resultBackList->head;
+
+	ListNode *start = ll->head;
+
+	int idx = 0;
+	int size = ll->size;
+	int mid = (size + 1) / 2;
+
+	while (idx < mid) {
+		if (frontP == NULL) {
+			frontP = start;
+			frontTailP = start;
+		} else {
+			frontTailP->next = start;
+			frontTailP = start;
+		}
+
+		idx++;
+		start = start->next;
+	}
+	
+	// 이미 위에서 frontP = resultFrontList->head를 했는데 왜 또 다시 선언하는거냐
+	// 위에 선언은 frontP라는 주소 변수가 resultFrontList의 헤더 자리를 가리키고 있었다.
+	// 이땐 둘다 null이다.
+	// 이후 frontP는 기존 리스트의 헤더를 가리키게 된다.
+	// 그럼 반복문이 끝난 후에 resultFrontList자리의 헤더를 재설정해줘야 시작 지점 갱신이 된다. 왜냐면 null상태였으므로.
+
+	resultFrontList->head = frontP; 
+	if (frontTailP != NULL) {
+		frontTailP->next = NULL;
+	}
+
+	while (start != NULL) {
+		if (backP == NULL) {
+			backP = start;
+			backTail = start;
+		} else {
+			backTail->next = start;
+			backTail = start;
+		}
+
+		start = start->next;
+	}
+	
+	resultBackList->head = backP;
+	
+	if (backTail != NULL) {
+		backTail->next = NULL;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
