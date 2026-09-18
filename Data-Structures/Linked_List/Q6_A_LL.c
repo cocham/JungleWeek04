@@ -89,6 +89,46 @@ int main()
 int moveMaxToFront(ListNode **ptrHead)
 {
     /* add your code here */
+
+	/*
+	이미 최댓값이 맨 앞에 있는 경우 (예: 70, 30, 20) → 이동시킬 필요 없음, prev가 없는 경우 처리
+	리스트가 노드 1개인 경우
+	리스트가 비어있는 경우 (*ptrHead == NULL)
+	최댓값이 중복으로 여러 개 있는 경우 (첫 번째 걸 옮기는지, 마지막 걸 옮기는지 — 문제에 명시 없으면 보통 처음 나온 것 기준)
+	*/
+
+	ListNode* head = *ptrHead; // ptrHead는 &(ll->head)를 가리킴, 역참조하면 ll->head의 값(= 첫 노드 포인터)이 나옴
+	ListNode* maxPrev = NULL;
+	ListNode* maxNode = head;
+	ListNode* cur = *ptrHead;
+	ListNode* prev = NULL;
+	
+	if (head == NULL) {
+		return -1;
+	}
+
+	while (cur != NULL) {
+
+		if (cur->item > maxNode->item) {
+			maxNode = cur;
+			maxPrev = prev;
+		}
+
+		prev = cur;
+		cur = cur->next;
+	}
+
+	// 노드가 하나 있을때
+	if (maxPrev == NULL) {
+		return maxNode->item;
+	}
+
+	maxPrev->next = maxNode->next; //이걸 먼저 해줘야 기존 연결 노드를 가져옴
+	maxNode->next = head;
+	*ptrHead = maxNode;
+	
+	return maxNode->item;
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////
